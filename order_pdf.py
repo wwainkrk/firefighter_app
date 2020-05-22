@@ -24,15 +24,15 @@ elements.append(Paragraph(ptext, styles['Right']))
 elements.append(Spacer(1, 12))
 
 day_of_year = time.localtime().tm_yday
-ptext = f'<font size="16">ROZKAZ DZIENNY NR {day_of_year}/{date.year}</font>'
+ptext = f'<font size="16"><b>ROZKAZ DZIENNY NR {day_of_year}/{date.year} r.</b></font>'
 elements.append(Paragraph(ptext, styles['Center']))
 elements.append(Spacer(1, 12))
 
-ptext = '<font size="12">Dowódcy Jednostki Ratunkowo Gaśniczej Nr 4</font>'
+ptext = '<font size="12"><b>Dowódcy Jednostki Ratunkowo Gaśniczej Nr 4</b></font>'
 elements.append(Paragraph(ptext, styles['Center']))
 elements.append(Spacer(1, 12))
 
-ptext = f'<font size="12">z dnia {date.day}.{date.month}.{date.year}</font>'
+ptext = f'<font size="12">z dnia {date.day}.{date.month}.{date.year} r.</font>'
 elements.append(Paragraph(ptext, styles['Center']))
 elements.append(Spacer(1, 12))
 
