@@ -1,45 +1,37 @@
 from reportlab.pdfgen import canvas
-from reportlab.rl_config import defaultPageSize
-
-
-def draw_my_ruler(pdf: canvas.Canvas):
-    """
-    Method for helping to put elements on page in correct place
-
-    :param pdf: Canvas object to draw something on page in pdf document
-    """
-    pdf.drawString(100,810, 'x100')
-    pdf.drawString(200,810, 'x200')
-    pdf.drawString(300,810, 'x300')
-    pdf.drawString(400,810, 'x400')
-    pdf.drawString(500,810, 'x500')
-
-    pdf.drawString(10,100, 'y100')
-    pdf.drawString(10,200, 'y200')
-    pdf.drawString(10,300, 'y300')
-    pdf.drawString(10,400, 'y400')
-    pdf.drawString(10,500, 'y500')
-    pdf.drawString(10,600, 'y600')
-    pdf.drawString(10,700, 'y700')
-    pdf.drawString(10,800, 'y800')
-
+# from reportlab.rl_config import defaultPageSize
+from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Image
+from reportlab.lib.pagesizes import letter
+from reportlab.lib.styles import ParagraphStyle, getSampleStyleSheet
+from reportlab.lib.enums import TA_JUSTIFY, TA_RIGHT
 
 # Creating document
-pdf = canvas.Canvas("firefighter_test.pdf")
-draw_my_ruler(pdf)                                # execute some helping labels
+# pdf = canvas.Canvas("firefighter_test.pdf")
+# draw_my_ruler(pdf)                                # execute some helping labels
+
+doc = SimpleDocTemplate("firefighter_test.pdf", pagesize=letter,
+                        rightMargin=9, leftMargin=25,
+                        topMargin=20, bottomMargin=20)          # constructor of document with settings for margins
+
+# Elements on page which will be print
+elements = []
+
+# Setting additional styles for document
+styles = getSampleStyleSheet()
+styles.add(ParagraphStyle(name='Left', fontName='Times'))
+styles.add(ParagraphStyle(name='Justify', alignment=TA_JUSTIFY))    # style for good looking document
+styles.add(ParagraphStyle(name='Right', alignment=TA_RIGHT))        # style to set paragraph on right side of page
+
+ptext = '<font size="12">Times New Roman</font>'
+elements.append(Paragraph(ptext, styles['Left']))
 
 
 # Setting fonts for document
 # print(pdf.getAvailableFonts())
-PAGE_HEIGHT = defaultPageSize[0]
-PAGE_WIDTH = defaultPageSize[1]
-#print(PAGE_HEIGHT, PAGE_WIDTH)
+# print(PAGE_HEIGHT, PAGE_WIDTH)
 
-pdf.setFont("Times-Roman", 20)
-pdf.drawCentredString(PAGE_HEIGHT/2, PAGE_WIDTH/2, "Times New Roman")
-# pdf.setFontSize(30)
-# pdf.drawString(300, 700, "Times New Roman Bigger")
+#pdf.setFont("Times-Roman", 20)
+#pdf.drawCentredString(PAGE_HEIGHT/2, PAGE_WIDTH/2, "Times New Roman")
+#pdf.save()
 
-doc = D
-pdf.save()
-
+doc.build(elements)
