@@ -1,7 +1,8 @@
 from reportlab.pdfgen import canvas
+from reportlab.rl_config import defaultPageSize
 
 
-def drawMyRuler(pdf: canvas.Canvas):
+def draw_my_ruler(pdf: canvas.Canvas):
     """
     Method for helping to put elements on page in correct place
 
@@ -25,6 +26,20 @@ def drawMyRuler(pdf: canvas.Canvas):
 
 # Creating document
 pdf = canvas.Canvas("firefighter_test.pdf")
-drawMyRuler(pdf)
+draw_my_ruler(pdf)                                # execute some helping labels
+
+
+# Setting fonts for document
+# print(pdf.getAvailableFonts())
+PAGE_HEIGHT = defaultPageSize[0]
+PAGE_WIDTH = defaultPageSize[1]
+#print(PAGE_HEIGHT, PAGE_WIDTH)
+
+pdf.setFont("Times-Roman", 20)
+pdf.drawCentredString(PAGE_HEIGHT/2, PAGE_WIDTH/2, "Times New Roman")
+# pdf.setFontSize(30)
+# pdf.drawString(300, 700, "Times New Roman Bigger")
+
+doc = D
 pdf.save()
 
