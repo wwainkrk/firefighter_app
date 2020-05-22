@@ -1,14 +1,10 @@
-from reportlab.pdfgen import canvas
-# from reportlab.rl_config import defaultPageSize
+import datetime, time
 from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Image
 from reportlab.lib.pagesizes import letter
 from reportlab.lib.styles import ParagraphStyle, getSampleStyleSheet
-from reportlab.lib.enums import TA_JUSTIFY, TA_RIGHT
+from reportlab.lib.enums import TA_CENTER, TA_RIGHT
 
 # Creating document
-# pdf = canvas.Canvas("firefighter_test.pdf")
-# draw_my_ruler(pdf)                                # execute some helping labels
-
 doc = SimpleDocTemplate("firefighter_test.pdf", pagesize=letter,
                         rightMargin=9, leftMargin=25,
                         topMargin=20, bottomMargin=20)          # constructor of document with settings for margins
@@ -19,19 +15,25 @@ elements = []
 # Setting additional styles for document
 styles = getSampleStyleSheet()
 styles.add(ParagraphStyle(name='Left', fontName='Times'))
-styles.add(ParagraphStyle(name='Justify', alignment=TA_JUSTIFY))    # style for good looking document
-styles.add(ParagraphStyle(name='Right', alignment=TA_RIGHT))        # style to set paragraph on right side of page
+styles.add(ParagraphStyle(name='Center', fontName='Times', alignment=TA_CENTER))    # style for good looking document
+styles.add(ParagraphStyle(name='Right', fontName='Times', alignment=TA_RIGHT))        # style to set paragraph on right side of page
 
-ptext = '<font size="12">Times New Roman</font>'
-elements.append(Paragraph(ptext, styles['Left']))
+date = datetime.datetime.now().date()
+ptext = f'<font size="12">Kraków, dn. {date.day}.{date.month}.{date.year}</font>'
+elements.append(Paragraph(ptext, styles['Right']))
+elements.append(Spacer(1, 12))
 
+day_of_year = time.localtime().tm_yday
+ptext = f'<font size="16">ROZKAZ DZIENNY NR {day_of_year}/{date.year}</font>'
+elements.append(Paragraph(ptext, styles['Center']))
+elements.append(Spacer(1, 12))
 
-# Setting fonts for document
-# print(pdf.getAvailableFonts())
-# print(PAGE_HEIGHT, PAGE_WIDTH)
+ptext = '<font size="12">Dowódcy Jednostki Ratunkowo Gaśniczej Nr 4</font>'
+elements.append(Paragraph(ptext, styles['Center']))
+elements.append(Spacer(1, 12))
 
-#pdf.setFont("Times-Roman", 20)
-#pdf.drawCentredString(PAGE_HEIGHT/2, PAGE_WIDTH/2, "Times New Roman")
-#pdf.save()
+ptext = f'<font size="12">z dnia {date.day}.{date.month}.{date.year}</font>'
+elements.append(Paragraph(ptext, styles['Center']))
+elements.append(Spacer(1, 12))
 
 doc.build(elements)
