@@ -9,6 +9,10 @@ import sys
 from PyQt5.QtWidgets import QApplication, QWidget, QPushButton, QLabel, QLineEdit, QGridLayout, QMessageBox
 from PyQt5.QtGui import QIcon
 
+from sqlalchemy import create_engine
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import sessionmaker
+
 
 class LoginForm(QWidget):
     """
@@ -56,10 +60,23 @@ class Firefighter(QWidget):
         self.show()
 
 
+def db_connection():
+    # We will create engine, session and mapper for SQLite database
+
+    engine = create_engine('sqlite:///database\\JRG.db', echo=True)
+    base = declarative_base()
+
+    session = sessionmaker(bind=engine)
+    session.configure(bind=engine)
+
+    return session
+
+
 def main():
 
+    session = db_connection()
     app = QApplication(sys.argv)
-    main = Firefighter()
+    main_window = Firefighter()
     sys.exit(app.exec_())
 
 
