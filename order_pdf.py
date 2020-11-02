@@ -1,3 +1,10 @@
+"""
+Firefighter app
+
+Author: Sebastian Warszawa
+Website: https://github.com/wwainkrk
+"""
+
 import datetime, time
 from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Image
 from reportlab.platypus import ListFlowable, ListItem
@@ -42,14 +49,11 @@ def register_fonts():
 def set_styles():
     # Setting additional styles for document
     styles = getSampleStyleSheet()
-    #styles.add(ParagraphStyle(name='BoldLeft', fontName='FreeSansBold', alignment=TA_LEFT))
+
     styles.add(ParagraphStyle(name='Left', fontName='FreeSans', alignment=TA_LEFT))
-    #styles.add(ParagraphStyle(name='HeaderBoldCenter', fontName='FreeSansBold', alignment=TA_CENTER))    # style for good looking document
     styles.add(ParagraphStyle(name='Center', fontName='FreeSans', alignment=TA_CENTER))
     styles.add(ParagraphStyle(name='Right', fontName='FreeSans', alignment=TA_RIGHT))        # style to set paragraph on right side of page
-    #styles.add(ParagraphStyle(name='FooterBoldRight', fontName='FreeSansBold', alignment=TA_RIGHT))
 
-    #print(styles.list())
     return styles
 
 
@@ -60,7 +64,7 @@ def create_header(elements, styles):
     elements.append(Spacer(1, 12))
 
     day_of_year = time.localtime().tm_yday
-    ptext = f'<font size="16">ROZKAZ DZIENNY NR {day_of_year}/{date.year} r.</font>'
+    ptext = f'<font size="16"><b>ROZKAZ DZIENNY NR {day_of_year}/{date.year} r.</b></font>'
     elements.append(Paragraph(ptext, styles['Center']))
     elements.append(Spacer(1, 12))
 
