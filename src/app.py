@@ -24,7 +24,7 @@ class LoginForm(QWidget):
         super().__init__()
         self.icons_path = os.path.dirname(os.path.realpath(__file__))
         self.setWindowTitle('Okno logowania')
-        self.setWindowIcon(QIcon(self.icons_path + "/icons/firefighter.svg"))                  # the same icon as in main window
+        self.setWindowIcon(QIcon("src/icons/firefighter.svg"))                  # the same icon as in main window
         self.resize(500, 150)
 
         layout = QGridLayout()
@@ -62,7 +62,7 @@ class Firefighter(QWidget):
     def init_UI(self):
 
         self.setGeometry(300, 300, 300, 220)
-        self.setWindowIcon(QIcon(self.icons_path + "/icons/firefighter.svg"))
+        self.setWindowIcon(QIcon("src/icons/firefighter.svg"))
         self.setWindowTitle('Firefighter Order')
 
         self.show()
@@ -71,7 +71,7 @@ class Firefighter(QWidget):
 def db_connection():
     # We will create engine, session and mapper for SQLite database
 
-    engine = create_engine('sqlite:///database\\JRG.db', echo=True)
+    engine = create_engine('sqlite:///src/database\\JRG.db', echo=True)
 
     if not database_exists(engine.url):
         create_database(engine.url)
@@ -90,6 +90,7 @@ def main():
     session = db_connection()
     app = QApplication(sys.argv)
     login = LoginForm()
+    #print(login.icons_path)
     #print(main_window.icons_path)
     sys.exit(app.exec_())
 

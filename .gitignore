@@ -1,5 +1,8 @@
 code/Lib/
 code/Scripts/
+__pycache__/
+build/
+dist/
 .idea/
 *.pdf
-code/database\\JRG.db
+src/database\\JRG.db
