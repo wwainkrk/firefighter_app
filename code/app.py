@@ -12,6 +12,7 @@ from PyQt5.QtGui import QIcon
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
+from sqlalchemy_utils.functions import database_exists, create_database
 
 
 class LoginForm(QWidget):
@@ -41,7 +42,11 @@ class LoginForm(QWidget):
         layout.addWidget(self.lineEdit_password, 1, 1)
 
         self.button_login = QPushButton('Zaloguj')
+        layout.addWidget(self.button_login, 2, 0, 1, 2)
         #self.button_login.clicked.connect()
+
+        self.setLayout(layout)
+        self.show()
 
 
 class Firefighter(QWidget):
@@ -64,6 +69,11 @@ def db_connection():
     # We will create engine, session and mapper for SQLite database
 
     engine = create_engine('sqlite:///database\\JRG.db', echo=True)
+
+    if not database_exists(engine.url):
+        create_database(engine.url)
+
+
     base = declarative_base()
 
     session = sessionmaker(bind=engine)
@@ -76,7 +86,8 @@ def main():
 
     session = db_connection()
     app = QApplication(sys.argv)
-    main_window = Firefighter()
+    login = LoginForm()
+    #main_window = Firefighter()
     sys.exit(app.exec_())
 
 
