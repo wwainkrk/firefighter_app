@@ -6,6 +6,7 @@ Website: https://github.com/wwainkrk
 """
 
 import sys
+import os
 from PyQt5.QtWidgets import QApplication, QWidget, QPushButton, QLabel, QLineEdit, QGridLayout, QMessageBox
 from PyQt5.QtGui import QIcon
 
@@ -21,8 +22,9 @@ class LoginForm(QWidget):
     """
     def __init__(self):
         super().__init__()
+        self.icons_path = os.path.dirname(os.path.realpath(__file__))
         self.setWindowTitle('Okno logowania')
-        self.setWindowIcon(QIcon("icons/firefighter.svg"))                  # the same icon as in main window
+        self.setWindowIcon(QIcon(self.icons_path + "/icons/firefighter.svg"))                  # the same icon as in main window
         self.resize(500, 150)
 
         layout = QGridLayout()
@@ -54,12 +56,13 @@ class Firefighter(QWidget):
     def __init__(self):
         super().__init__()                          # Constructor from QWidget class
 
+        self.icons_path = os.path.dirname(os.path.realpath(__file__))
         self.init_UI()                               # Settings for our app
 
     def init_UI(self):
 
         self.setGeometry(300, 300, 300, 220)
-        self.setWindowIcon(QIcon("icons/firefighter.svg"))
+        self.setWindowIcon(QIcon(self.icons_path + "/icons/firefighter.svg"))
         self.setWindowTitle('Firefighter Order')
 
         self.show()
@@ -87,7 +90,7 @@ def main():
     session = db_connection()
     app = QApplication(sys.argv)
     login = LoginForm()
-    #main_window = Firefighter()
+    #print(main_window.icons_path)
     sys.exit(app.exec_())
 
 
