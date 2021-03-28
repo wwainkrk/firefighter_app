@@ -28,6 +28,7 @@ def create_pdf():
     register_fonts()
     doc_styles = set_styles()
     create_header(doc_elements, doc_styles)
+    create_paragraphs(doc_elements, doc_styles)
     create_sections(doc_elements, doc_styles)
     doc.build(doc_elements)
 
@@ -39,7 +40,8 @@ def register_fonts():
     pdfmetrics.registerFont(TTFont('FreeSansItalic', "fonts/FreeSansOblique.ttf"))
     pdfmetrics.registerFont(TTFont('FreeSansBoldItalic', "fonts/FreeSansBoldOblique.ttf"))
 
-    pdfmetrics.registerFontFamily('FreeSans', normal='FreeSans', bold='FreeSansBold', italic='FreeSansItalic', boldItalic='FreeSansBoldItalic')
+    pdfmetrics.registerFontFamily('FreeSans', normal='FreeSans', bold='FreeSansBold', italic='FreeSansItalic',
+                                  boldItalic='FreeSansBoldItalic')
     addMapping('FreeSans', 0, 0, 'FreeSans')
     addMapping('FreeSans', 0, 1, 'FreeSansItalic')
     addMapping('FreeSans', 1, 0, 'FreeSansBold')
@@ -50,9 +52,12 @@ def set_styles():
     # Setting additional styles for document
     styles = getSampleStyleSheet()
 
+    # style to set paragraph on right side of page
     styles.add(ParagraphStyle(name='Left', fontName='FreeSans', alignment=TA_LEFT))
     styles.add(ParagraphStyle(name='Center', fontName='FreeSans', alignment=TA_CENTER))
-    styles.add(ParagraphStyle(name='Right', fontName='FreeSans', alignment=TA_RIGHT))        # style to set paragraph on right side of page
+    styles.add(ParagraphStyle(name='Right', fontName='FreeSans', alignment=TA_RIGHT))
+
+    styles.add(ParagraphStyle(name='Paragraph', fontName='FreeSans', fontSize=14))
 
     return styles
 
@@ -77,30 +82,58 @@ def create_header(elements, styles):
     elements.append(Spacer(1, 12))
 
 
-def create_sections(elements, styles):
-    service_label = ['Dyżur domowy  Dowódcy Grupy ',
-                     'Dyżurny operacyjny Rejonu',
-                     'Oficer Operacyjny',
-                     'Dowódca zmiany',
-                     'Dyżurny PA JRG',
-                     'Szef zmiany',
-                     'Garażomistrz',
-                     'Dowódca działań ratowniczych SGRW-N',
-                     'Bosman',
-                     'Podoficer dyżurny',
-                     'Strażak dyżurny'
-                    ]
+def create_paragraphs(elements, styles):
+    paragraphs_label = [
+        'SŁUŻBA',
+        'PODZIAŁ BOJOWY',
+        'PRACA W APARATACH POWIETRZNYCH (z łącznością podhełmową)',
+        'DYŻURNI NURKOWIE',
+        'DYŻURNI RATOWNICY MEDYCZNI PSP',
+        'ZAJĘCIA',
+        'WOLNE',
+        'DYŻUR DOMOWY',
+        'UWAGI'
+    ]
 
-    service_list = []
+    paragraphs_list = []
+
+    style = styles['Paragraph']
+    style.leading = 24
 
     counter = 1
-    for label in service_label:
-        list_item = ListItem(Paragraph(f"{counter}. {label}", styles['Left']), value=False)
-        service_list.append(list_item)
+    for label in paragraphs_label:
+        list_item = ListItem(Paragraph(f"<b>{counter}. {label}</b>", style), value=False)
+        paragraphs_list.append(list_item)
         counter += 1
 
-    service = ListFlowable(service_list, leftIndent=37.5)
-    elements.append(service)
+    paragraphs = ListFlowable(paragraphs_list)
+
+    elements.append(paragraphs)
+
+
+def create_sections(elements, styles):
+    service_label = [
+        'Dyżur domowy  Dowódcy Grupy ',
+        'Dyżurny operacyjny Rejonu',
+        'Oficer Operacyjny',
+        'Dowódca zmiany',
+        'Dyżurny PA JRG',
+        'Szef zmiany',
+        'Garażomistrz',
+        'Dowódca działań ratowniczych SGRW-N',
+        'Bosman',
+        'Podoficer dyżurny',
+        'Strażak dyżurny'
+    ]
+
+    service_list = ListFlowable(
+        [ListItem(Paragraph(service, styles['Left']), leftIndent=35, bulletColor='black') for
+         service in service_label],
+        bulletType='bullet',
+        start='-'
+    )
+
+    elements.append(service_list)
 
     ptext = f'<font size="14"><b>Podpisał D-ca JRG-4</b></font>'
     elements.append(Paragraph(ptext, styles['Right']))
