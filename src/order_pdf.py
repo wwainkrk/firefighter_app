@@ -103,16 +103,12 @@ class OrderPDF:
         for label in paragraphs_label:
             list_item = ListItem(Paragraph(f"<b>{counter}. {label}</b>", style), value=False)
             paragraphs_list.append(list_item)
+            self.paragraph_switch(counter)
             counter += 1
 
         paragraphs = ListFlowable(paragraphs_list)
 
         self.doc_elements.append(paragraphs)
-
-# def switch(x):
-#     return {
-#         1: create_sections(doc)
-#     }
 
     def create_sections(self):
         service_label = [
@@ -140,6 +136,47 @@ class OrderPDF:
 
         ptext = f'<font size="14"><b>Podpisał D-ca JRG-4</b></font>'
         self.doc_elements.append(Paragraph(ptext, self.doc_styles['Right']))
+
+    def trucks_crew(self):
+        print(2)
+
+    def oxygen_apparatuses(self):
+        print(3)
+
+    def divers(self):
+        print(4)
+
+    def medical_lifeguards(self):
+        print(5)
+
+    def activities(self):
+        print(6)
+
+    def off_work(self):
+        print(7)
+
+    def home_duty(self):
+        print(8)
+
+    def comments(self):
+        print(9)
+
+    def paragraph_switch(self, arg):
+        switcher = {
+            1: self.create_sections,
+            2: self.trucks_crew,
+            3: self.oxygen_apparatuses,
+            4: self.divers,
+            5: self.medical_lifeguards,
+            6: self.activities,
+            7: self.off_work,
+            8: self.home_duty,
+            9: self.comments
+        }
+
+        func = switcher.get(arg, lambda: "Invalid month")
+
+        func()
 
 
 pdf = OrderPDF()
