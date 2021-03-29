@@ -82,6 +82,7 @@ class OrderPDF:
         self.doc_elements.append(Spacer(1, 12))
 
     def create_paragraphs(self):
+        # Main paragraphs, main points of documents for loop
         paragraphs_label = [
             'SŁUŻBA',
             'PODZIAŁ BOJOWY',
@@ -94,21 +95,16 @@ class OrderPDF:
             'UWAGI'
         ]
 
-        paragraphs_list = []
-
+        # New style for paragraph - bold text directly in content
         style = self.doc_styles['Paragraph']
-        style.leading = 24
+        style.leading = 24                      # Space after paragraph line
 
-        counter = 1
+        counter = 1                             # Number of paragraph
         for label in paragraphs_label:
-            list_item = ListItem(Paragraph(f"<b>{counter}. {label}</b>", style), value=False)
-            paragraphs_list.append(list_item)
+            list_item = Paragraph(f"<b>{counter}. {label}</b>", style)
+            self.doc_elements.append(list_item)
             self.paragraph_switch(counter)
             counter += 1
-
-        paragraphs = ListFlowable(paragraphs_list)
-
-        self.doc_elements.append(paragraphs)
 
     def create_sections(self):
         service_label = [
