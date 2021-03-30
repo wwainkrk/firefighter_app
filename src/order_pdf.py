@@ -32,7 +32,8 @@ class OrderPDF:
 
         self.create_header()
         self.create_paragraphs()
-        self.create_sections()
+        self.create_footer()
+        # self.create_sections()
         doc.build(self.doc_elements)
 
     def register_fonts(self):
@@ -106,6 +107,10 @@ class OrderPDF:
             self.paragraph_switch(counter)
             counter += 1
 
+    def create_footer(self):
+        ptext = f'<font size="14"><b>Podpisał D-ca JRG-4</b></font>'
+        self.doc_elements.append(Paragraph(ptext, self.doc_styles['Right']))
+
     def create_sections(self):
         service_label = [
             'Dyżur domowy  Dowódcy Grupy ',
@@ -129,9 +134,6 @@ class OrderPDF:
         )
 
         self.doc_elements.append(service_list)
-
-        ptext = f'<font size="14"><b>Podpisał D-ca JRG-4</b></font>'
-        self.doc_elements.append(Paragraph(ptext, self.doc_styles['Right']))
 
     def trucks_crew(self):
         print(2)
