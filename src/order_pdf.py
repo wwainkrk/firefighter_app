@@ -6,11 +6,11 @@ Website: https://github.com/wwainkrk
 """
 
 import datetime, time
-from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Image
+from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle
 from reportlab.platypus import ListFlowable, ListItem
 from reportlab.lib.pagesizes import letter
 from reportlab.lib.styles import ParagraphStyle, getSampleStyleSheet
-from reportlab.lib.enums import TA_CENTER, TA_RIGHT, TA_LEFT
+from reportlab.lib.enums import TA_CENTER, TA_RIGHT, TA_LEFT, TA_JUSTIFY
 
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
@@ -26,7 +26,7 @@ class OrderPDF:
 
     def create_pdf(self):
         # Creating document
-        doc = SimpleDocTemplate("firefighter_test.pdf", pagesize=letter,
+        self.doc = SimpleDocTemplate("firefighter_test.pdf", pagesize=letter,
                                 rightMargin=20, leftMargin=20,
                                 topMargin=20, bottomMargin=20)          # constructor of document with settings for margins
 
@@ -34,7 +34,7 @@ class OrderPDF:
         self.create_paragraphs()
         self.create_footer()
         # self.create_sections()
-        doc.build(self.doc_elements)
+        self.doc.build(self.doc_elements)
 
     def register_fonts(self):
         # Register font and set style with new Font
@@ -58,6 +58,7 @@ class OrderPDF:
         styles.add(ParagraphStyle(name='Left', fontName='FreeSans', alignment=TA_LEFT))
         styles.add(ParagraphStyle(name='Center', fontName='FreeSans', alignment=TA_CENTER))
         styles.add(ParagraphStyle(name='Right', fontName='FreeSans', alignment=TA_RIGHT))
+        styles.add(ParagraphStyle(name='Justify', fontName='FreeSans', alignment=TA_JUSTIFY))
 
         styles.add(ParagraphStyle(name='Paragraph', fontName='FreeSans', fontSize=14))
 
@@ -136,28 +137,120 @@ class OrderPDF:
         self.doc_elements.append(service_list)
 
     def trucks_crew(self):
-        print(2)
+        # style = self.doc_styles["Justify"]
+        # style.leftIndent = 35
+        # style.rightIndent = 35
+        # ptext = f"<b>GBARt 2,5/25 GCBA 5/24 ………………………</b>"
+        # trucks = Paragraph(ptext, style)
+        # trucks.width = self.doc.width
+        # trucks.style.alignment = TA_JUSTIFY
+        # print(trucks.width)
+        data = [['GBARt 2,5/25', 'GCBA 5/24', '………………………']]
+        table_width = (self.doc.width - self.doc.leftMargin - self.doc.rightMargin) / 3
+        t = Table(data, table_width)
+
+        self.doc_elements.append(t)
 
     def oxygen_apparatuses(self):
-        print(3)
+        data = [
+            ['GBARt 2,5/25', '1. .................', '2. ........................'],
+            ['GCBA 5/24', '1. .................', '2. ........................']
+        ]
+
+        t = Table(data)
+
+        self.doc_elements.append(t)
 
     def divers(self):
-        print(4)
+        data = [
+            ['1. .................', '2. ........................', '3. .........................'],
+            ['4. .................', '5. ........................', '6. .........................']
+        ]
+
+        t = Table(data)
+
+        self.doc_elements.append(t)
 
     def medical_lifeguards(self):
-        print(5)
+        # Function for ligfeguards section, only two places for lifeguards
+
+        data = [
+            ['1. .................', '2. ........................']
+        ]
+
+        t = Table(data)
+
+        self.doc_elements.append(t)
 
     def activities(self):
-        print(6)
+        # Function for activities in a day, e.g. Physical Education, workshops.
+
+        data = [
+            ['1. ........................'],
+            ['2. ........................'],
+            ['3. ........................'],
+            ['4. ........................'],
+            ['5. ........................'],
+            ['6. ........................']
+        ]
+
+        t = Table(data)
+
+        self.doc_elements.append(t)
 
     def off_work(self):
-        print(7)
+        # Function for section with firefighters on holidays or different days off
+
+        ptext = f'<font size="14"><b>Urlopy</b></font>'
+        holidays = Paragraph(ptext, style=self.doc_styles['Left'])
+
+        self.doc_elements.append(holidays)
+
+        data = [
+            ['1. .................', '2. ........................', '3. .........................'],
+            ['4. .................', '5. ........................', '6. .........................']
+        ]
+
+        t = Table(data)
+
+        self.doc_elements.append(t)
+
+        ptext = f'<font size="14"><b>Czas wolny</b></font>'
+        freetime = Paragraph(ptext, style=self.doc_styles['Left'])
+
+        self.doc_elements.append(freetime)
+
+        data = [
+            ['1. .................', '2. ........................', '3. .........................'],
+            ['4. .................', '5. ........................', '6. .........................'],
+            ['7. .................', '8. ........................', '9. .........................']
+        ]
+
+        t = Table(data)
+
+        self.doc_elements.append(t)
 
     def home_duty(self):
-        print(8)
+        # Function foe section with firefighter, which are on home duty and which they could arrive on phone call
+
+        data = [
+            ['1. .................', '2. ........................', '3. .........................'],
+            ['4. .................', '5. ........................', '6. .........................'],
+            ['7. .................', '8. ........................', '9. .........................']
+        ]
+
+        t = Table(data)
+
+        self.doc_elements.append(t)
 
     def comments(self):
-        print(9)
+        data = [
+            ['.................']
+        ]
+
+        t = Table(data)
+
+        self.doc_elements.append(t)
 
     def paragraph_switch(self, arg):
         switcher = {
